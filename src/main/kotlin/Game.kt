@@ -1,19 +1,19 @@
 import figure.*
-import figure.Target
-import pt.isel.canvas.Canvas
+import pt.isel.canvas.*
 
 data class Game(
-    val dim: Dimension, val man: Man, // Fase 1 e 2
-    val walls: List<Position>, // Fase 3
-    val boxes: List<Position>, // Fase 4
-    val targets: List<Position> // Fase 5
+    val dim: Dimension,
+    val man: Man,
+    val walls: List<Position>,
+    val boxes: List<Position>,
+    val targets: List<Position>
 )
 
 fun Game.draw(canvas: Canvas) {
     canvas.erase()
-    walls.forEach { Wall(it).draw(canvas) }
-    targets.forEach { Target(it).draw(canvas) }
-    boxes.forEach { Box(it).draw(canvas, targets) }
+    walls.forEach { Wall(dim, it).draw(canvas) }
+    targets.forEach { Target(dim, it).draw(canvas) }
+    boxes.forEach { Box(dim, it).draw(canvas, targets) }
     man.draw(canvas, boxes)
 }
 

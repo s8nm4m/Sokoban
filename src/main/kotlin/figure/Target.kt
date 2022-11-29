@@ -1,10 +1,19 @@
 package figure
 
 import Position
-import pt.isel.canvas.Canvas
+import pt.isel.canvas.*
 
-data class Target(val pos: Position)
+const val TGSTARTW = 0
+const val TGSTARTH = 218
+
+data class Target(val dim: Dimension, val pos: Position)
 
 fun Target.draw(canvas: Canvas) {
-    canvas.drawImage("soko|0,218,40,54", pos.col * 40, pos.line * 54, 40, 54)
+    canvas.drawImage(
+        "soko|$TGSTARTW,$TGSTARTH,${dim.width},${dim.height}",
+        pos.col * dim.width,
+        pos.line * dim.height,
+        dim.width,
+        dim.height
+    )
 }
