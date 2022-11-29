@@ -29,19 +29,19 @@ fun Man.draw(canvas: Canvas) {
 
 }
 
-fun Man.newPos(dir: Direction?): Position {
+fun Position.newPos(dir: Direction?): Position {
     return when (dir) {
-        Direction.LEFT -> Position(pos.col - 1, pos.line)
-        Direction.RIGHT -> Position(pos.col + 1, pos.line)
-        Direction.UP -> Position(pos.col, pos.line - 1)
-        Direction.DOWN -> Position(pos.col, pos.line + 1)
-        else -> pos
+        Direction.LEFT -> Position(col - 1, line)
+        Direction.RIGHT -> Position(col + 1, line)
+        Direction.UP -> Position(col, line - 1)
+        Direction.DOWN -> Position(col, line + 1)
+        else -> this
     }
 }
 
 fun Man.move(key: Int, list: List<Position>): Man {
     val direction = key.toDir()
-    val newPos = newPos(direction)
+    val newPos = pos.newPos(direction)
     val newDir = when (direction) {
         Direction.LEFT -> direction
         Direction.RIGHT -> direction
@@ -53,8 +53,3 @@ fun Man.move(key: Int, list: List<Position>): Man {
         copy(dir = newDir)
     } else copy(pos = newPos, dir = newDir)
 }
-/*
-fun Man.moveBox(){
-    val newBox =
-}
-*/
