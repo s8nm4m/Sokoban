@@ -8,6 +8,9 @@ const val WALLSTARTH = 218
 
 data class Wall(val dim: Dimension, val pos: Position)
 
+/**
+ * Drawing the wall
+ */
 fun Wall.draw(canvas: Canvas) {
     canvas.drawImage(
         "soko|$WALLSTARTW,$WALLSTARTH,${dim.width},${dim.height}",

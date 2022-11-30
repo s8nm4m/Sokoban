@@ -9,6 +9,9 @@ enum class Direction() {
     DOWN;
 }
 
+/**
+ * Selecting the proper direction dependent on the key pressed
+ */
 fun Int.toDir(): Direction? = Direction.values().find {
     return when (this) {
         LEFT_CODE -> Direction.LEFT

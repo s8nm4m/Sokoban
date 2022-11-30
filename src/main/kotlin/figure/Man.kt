@@ -12,6 +12,9 @@ const val DOWNIMG = 2
 
 data class Man(val dim: Dimension, val pos: Position, val dir: Direction)
 
+/**
+ * Drawing the map depending on the direction and if it is pushing the box or not
+ */
 fun Man.draw(canvas: Canvas, boxes: List<Position>) {
     val standing = when (dir) {
         Direction.LEFT -> LEFTIMG
@@ -30,11 +33,17 @@ fun Man.draw(canvas: Canvas, boxes: List<Position>) {
 
 }
 
+/**
+ * Verifying if the man is pushing a box
+ */
 fun Man.isPushing(boxes: List<Position>): Int {
     val newPos = pos.newPos(dir)
     return if (boxes.contains(newPos)) PUSHIMG else STILLIMG
 }
 
+/**
+ * Getting the new position if the man moves through the columns and the lines
+ */
 fun Position.newPos(dir: Direction?): Position {
     return when (dir) {
         Direction.LEFT -> Position(col - 1, line)
@@ -45,6 +54,10 @@ fun Position.newPos(dir: Direction?): Position {
     }
 }
 
+/**
+ * Getting the correct direction when man moves
+ * Verifying if there's a wall or a box so the man doesn't phase through
+ */
 fun Man.move(key: Int, walls: List<Position>, boxes: List<Position>): Man {
     val direction = key.toDir()
     val newPos = pos.newPos(direction)

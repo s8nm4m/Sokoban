@@ -8,6 +8,9 @@ const val TGSTARTH = 218
 
 data class Target(val dim: Dimension, val pos: Position)
 
+/**
+ * Drawing the target
+ */
 fun Target.draw(canvas: Canvas) {
     canvas.drawImage(
         "soko|$TGSTARTW,$TGSTARTH,${dim.width},${dim.height}",

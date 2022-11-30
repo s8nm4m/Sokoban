@@ -9,6 +9,9 @@ const val BOXSTARTH = 217
 
 data class Box(val dim: Dimension, val pos: Position)
 
+/**
+ * Drawing the white box if it isn't on target and the brown one if it is
+ */
 fun Box.draw(canvas: Canvas, targets: List<Position>) {
     val startW = if (!inTarget(targets)) BOXSTARTW else BOXSTARTW + dim.width
     canvas.drawImage(
@@ -19,6 +22,8 @@ fun Box.draw(canvas: Canvas, targets: List<Position>) {
         dim.height
     )
 }
-
+/**
+ * Function to verify if the box is in the target
+ */
 fun Box.inTarget(targets: List<Position>) = targets.contains(pos)
 

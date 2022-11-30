@@ -1,5 +1,10 @@
 import figure.*
 import pt.isel.canvas.*
+
+/**
+ * Drawing the map and transforming the list of maze.kt to an actual map
+ * Verifying if the boxes are on targets to end game by making the man to not move anymore
+ */
 fun main() {
     val dim = Dimension(40, 54)
     val maze = loadMap(level1)

@@ -8,7 +8,9 @@ data class Game(
     val boxes: List<Position>,
     val targets: List<Position>
 )
-
+/**
+ *Drawing everything including walls,targets,boxes and the man
+ */
 fun Game.draw(canvas: Canvas) {
     canvas.erase()
     walls.forEach { Wall(dim, it).draw(canvas) }
@@ -17,12 +19,18 @@ fun Game.draw(canvas: Canvas) {
     man.draw(canvas, boxes)
 }
 
+/**
+ * Making the man and the box move by copying them
+ */
 fun Game.move(k: Int): Game {
     val nextMan = man.move(k, walls, boxes)
     val newBoxList = boxes.move(nextMan, walls)
     return copy(man = nextMan, boxes = newBoxList)
 }
 
+/**
+ * Checking if the man can move the box and if the box can also move soo it doesn't phase through any walls
+ */
 fun List<Position>.move(nextMan: Man, walls: List<Position>): List<Position> {
     if (contains(nextMan.pos)) {
         val newBox = nextMan.pos.newPos(nextMan.dir)
