@@ -9,52 +9,63 @@ const val LEFTIMG = 3
 const val RIGHTIMG = 1
 const val UPIMG = 0
 const val DOWNIMG = 2
-const val STEPWIDTH = 41
-const val STEPHEIGHT = 54
 
-data class Man(val pos: Position, val dir: Direction, val push: Boolean = false)
+data class Man(val dim: Dimension, val pos: Position, val dir: Direction)
 
-fun Man.draw(canvas: Canvas) {
+/**
+ * Drawing the map depending on the direction and if it is pushing the box or not
+ */
+fun Man.draw(canvas: Canvas, boxes: List<Position>) {
     val standing = when (dir) {
         Direction.LEFT -> LEFTIMG
         Direction.RIGHT -> RIGHTIMG
         Direction.DOWN -> DOWNIMG
         else -> UPIMG
     }
-    val pushing = if (push) PUSHIMG else STILLIMG
+    val pushing = isPushing(boxes)
     canvas.drawImage(
-        "soko|${pushing * STEPWIDTH},${standing * STEPHEIGHT},${STEPWIDTH},${STEPHEIGHT}",
-        pos.col * STEPWIDTH, pos.line * STEPHEIGHT, STEPWIDTH, STEPHEIGHT
+        "soko|${pushing * dim.width},${standing * dim.height + 1},${dim.width},${dim.height}",
+        pos.col * dim.width,
+        pos.line * dim.height,
+        dim.width,
+        dim.height
     )
 
 }
 
-fun Man.newPos(dir: Direction?): Position {
+/**
+ * Verifying if the man is pushing a box
+ */
+fun Man.isPushing(boxes: List<Position>): Int {
+    val newPos = pos.newPos(dir)
+    return if (boxes.contains(newPos)) PUSHIMG else STILLIMG
+}
+
+/**
+ * Getting the new position if the man moves through the columns and the lines
+ */
+fun Position.newPos(dir: Direction?): Position {
     return when (dir) {
-        Direction.LEFT -> Position(pos.col - 1, pos.line)
-        Direction.RIGHT -> Position(pos.col + 1, pos.line)
-        Direction.UP -> Position(pos.col, pos.line - 1)
-        Direction.DOWN -> Position(pos.col, pos.line + 1)
-        else -> pos
+        Direction.LEFT -> Position(col - 1, line)
+        Direction.RIGHT -> Position(col + 1, line)
+        Direction.UP -> Position(col, line - 1)
+        Direction.DOWN -> Position(col, line + 1)
+        else -> this
     }
 }
 
-fun Man.move(key: Int, list: List<Position>): Man {
+/**
+ * Getting the correct direction when man moves
+ * Verifying if there's a wall or a box so the man doesn't phase through
+ */
+fun Man.move(key: Int, walls: List<Position>, boxes: List<Position>): Man {
     val direction = key.toDir()
-    val newPos = newPos(direction)
+    val newPos = pos.newPos(direction)
     val newDir = when (direction) {
-        Direction.LEFT -> direction
-        Direction.RIGHT -> direction
-        Direction.UP -> direction
-        Direction.DOWN -> direction
-        else -> this.dir
+        Direction.LEFT, Direction.DOWN, Direction.RIGHT, Direction.UP -> direction
+        else -> dir
     }
-    return if (list.contains(newPos)) {
+    return if (walls.contains(newPos.newPos(newDir)) && boxes.contains(newPos) || walls.contains(newPos))
         copy(dir = newDir)
-    } else copy(pos = newPos, dir = newDir)
+    else copy(pos = newPos, dir = newDir)
 }
-/*
-fun Man.moveBox(){
-    val newBox =
-}
-*/

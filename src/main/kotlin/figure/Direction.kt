@@ -2,13 +2,16 @@ package figure
 
 import pt.isel.canvas.*
 
-enum class Direction(x: Int, y: Int) {
-    LEFT(-1, 0),
-    RIGHT(1, 0),
-    UP(0, -1),
-    DOWN(0, 1)
+enum class Direction() {
+    LEFT,
+    RIGHT,
+    UP,
+    DOWN;
 }
 
+/**
+ * Selecting the proper direction dependent on the key pressed
+ */
 fun Int.toDir(): Direction? = Direction.values().find {
     return when (this) {
         LEFT_CODE -> Direction.LEFT

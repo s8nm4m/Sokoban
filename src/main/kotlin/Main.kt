@@ -1,31 +1,29 @@
 import figure.*
 import pt.isel.canvas.*
 
-const val WIDTH = 40 * 10
-const val HEIGHT = 52 * 10
-
-//OBJETIVOS
-//empurrar caixa
-//mudar de cor em cima da bola
-//nao deixar andar dps de acabar o jogo
-//correção do bug
-//DONE
-
+/**
+ * Drawing the map and transforming the list of maze.kt to an actual map
+ * Verifying if the boxes are on targets to end game by making the man to not move anymore
+ */
 fun main() {
+    val dim = Dimension(40, 54)
+    val maze = loadMap(level1)
+    val manPos = maze.positionOfType(Type.MAN)
+    val boxList = maze.positionsOfType(Type.BOX)
+    val wallList = maze.positionsOfType(Type.WALL)
+    val targetList = maze.positionsOfType(Type.TARGET)
+    val man = Man(dim, manPos, Direction.DOWN)
+    val board = Canvas(dim.width * maze.width, dim.height * maze.height, WHITE)
+    var game = Game(dim, man, wallList, boxList, targetList)
     onStart {
-        val maze = loadMap(level1)
-        val manPos = maze.positionOfType(Type.MAN)
-        val boxList = maze.positionsOfType(Type.BOX)
-        val wallList = maze.positionsOfType(Type.WALL)
-        val targetList = maze.positionsOfType(Type.TARGET)
-        val man = Man(manPos, Direction.RIGHT, false)
-        val board = Canvas(WIDTH, HEIGHT, WHITE)
-        var game = Game(Dimension(WIDTH, HEIGHT), man, wallList, boxList, targetList)
         game.draw(board)
         board.onKeyPressed { k ->
-            game = game.move(k.code)
-            game.draw(board)
+            if (game.boxes != game.targets) {
+                game = game.move(k.code)
+                game.draw(board)
+            }
         }
     }
-    onFinish { }
+    onFinish {
+    }
 }

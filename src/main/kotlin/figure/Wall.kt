@@ -1,19 +1,22 @@
 package figure
 
 import Position
-import pt.isel.canvas.Canvas
+import pt.isel.canvas.*
 
 const val WALLSTARTW = 41
-const val WALLSTARTH = 217
-const val WALLWIDTH = 40
-const val WALLHEIGHT = 54
+const val WALLSTARTH = 218
 
+data class Wall(val dim: Dimension, val pos: Position)
 
-data class Wall(val pos: Position)
-
+/**
+ * Drawing the wall
+ */
 fun Wall.draw(canvas: Canvas) {
     canvas.drawImage(
-        "soko|$WALLSTARTW,$WALLSTARTH,$WALLWIDTH,$WALLHEIGHT",
-        pos.col * WALLWIDTH, pos.line * WALLHEIGHT, WALLWIDTH, WALLHEIGHT
+        "soko|$WALLSTARTW,$WALLSTARTH,${dim.width},${dim.height}",
+        pos.col * dim.width,
+        pos.line * dim.height + 1,
+        dim.width,
+        dim.height
     )
 }
