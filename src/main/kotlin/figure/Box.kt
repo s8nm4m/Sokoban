@@ -1,11 +1,10 @@
 package figure
 
 import Position
-import pt.isel.canvas.*
+import pt.isel.canvas.Canvas
 
 const val BOXSTARTW = 81
 const val BOXSTARTH = 217
-
 
 data class Box(val dim: Dimension, val pos: Position)
 

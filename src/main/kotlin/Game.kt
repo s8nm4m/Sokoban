@@ -1,5 +1,6 @@
 import figure.*
-import pt.isel.canvas.*
+import figure.Target
+import pt.isel.canvas.Canvas
 
 data class Game(
     val dim: Dimension,
@@ -20,7 +21,7 @@ fun Game.draw(canvas: Canvas) {
 }
 
 /**
- * Making the man and the box move by copying them
+ * Making the man and the box move by returning a new game with the updated positions
  */
 fun Game.move(k: Int): Game {
     val nextMan = man.move(k, walls, boxes)
@@ -29,7 +30,7 @@ fun Game.move(k: Int): Game {
 }
 
 /**
- * Checking if the man can move the box and if the box can also move soo it doesn't phase through any walls
+ * Checking if the man can move the box and if the box can also move, so it doesn't phase through any walls
  */
 fun List<Position>.move(nextMan: Man, walls: List<Position>): List<Position> {
     if (contains(nextMan.pos)) {

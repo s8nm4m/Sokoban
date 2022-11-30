@@ -1,9 +1,14 @@
-import figure.*
-import pt.isel.canvas.*
+import figure.Dimension
+import figure.Direction
+import figure.Man
+import pt.isel.canvas.Canvas
+import pt.isel.canvas.WHITE
+import pt.isel.canvas.onFinish
+import pt.isel.canvas.onStart
 
 /**
  * Drawing the map and transforming the list of maze.kt to an actual map
- * Verifying if the boxes are on targets to end game by making the man to not move anymore
+ * Verifying if the boxes are on targets to end game by making the man unable to move anymore
  */
 fun main() {
     val dim = Dimension(40, 54)

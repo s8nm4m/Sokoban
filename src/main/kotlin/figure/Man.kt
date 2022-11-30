@@ -13,10 +13,10 @@ const val DOWNIMG = 2
 data class Man(val dim: Dimension, val pos: Position, val dir: Direction)
 
 /**
- * Drawing the map depending on the direction and if it is pushing the box or not
+ * Drawing the man depending on the direction and if it is pushing the box or not
  */
 fun Man.draw(canvas: Canvas, boxes: List<Position>) {
-    val standing = when (dir) {
+    val direction = when (dir) {
         Direction.LEFT -> LEFTIMG
         Direction.RIGHT -> RIGHTIMG
         Direction.DOWN -> DOWNIMG
@@ -24,7 +24,7 @@ fun Man.draw(canvas: Canvas, boxes: List<Position>) {
     }
     val pushing = isPushing(boxes)
     canvas.drawImage(
-        "soko|${pushing * dim.width},${standing * dim.height + 1},${dim.width},${dim.height}",
+        "soko|${pushing * dim.width},${direction * dim.height + 1},${dim.width},${dim.height}",
         pos.col * dim.width,
         pos.line * dim.height,
         dim.width,
@@ -42,7 +42,7 @@ fun Man.isPushing(boxes: List<Position>): Int {
 }
 
 /**
- * Getting the new position if the man moves through the columns and the lines
+ * Getting the new position if the man moves through the columns or the lines
  */
 fun Position.newPos(dir: Direction?): Position {
     return when (dir) {
@@ -65,7 +65,8 @@ fun Man.move(key: Int, walls: List<Position>, boxes: List<Position>): Man {
         Direction.LEFT, Direction.DOWN, Direction.RIGHT, Direction.UP -> direction
         else -> dir
     }
-    return if (walls.contains(newPos.newPos(newDir)) && boxes.contains(newPos) || walls.contains(newPos))
-        copy(dir = newDir)
-    else copy(pos = newPos, dir = newDir)
+    return when {
+        walls.contains(newPos.newPos(newDir)) && boxes.contains(newPos) || walls.contains(newPos) -> copy(dir = newDir)
+        else -> copy(pos = newPos, dir = newDir)
+    }
 }
