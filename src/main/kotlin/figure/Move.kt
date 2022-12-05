@@ -6,5 +6,6 @@ data class Move(
     val previousPosition: Position,
     val nextPosition: Position,
     val previousDir: Direction,
-    val nextDir: Direction
+    val nextDir: Direction,
+    val count: Int = 0
 )

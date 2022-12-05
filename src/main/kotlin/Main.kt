@@ -36,3 +36,7 @@ fun main() {
     onFinish {
     }
 }
+
+fun List<String>.splitBy(param: () -> No): List<String> {
+
+}
