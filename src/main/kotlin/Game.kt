@@ -7,7 +7,9 @@ data class Game(
     val man: Man,
     val walls: List<Position>,
     val boxes: List<Position>,
-    val targets: List<Position>
+    val targets: List<Position>,
+    val level: Int = 0,
+    val moves: List<Move>
 )
 /**
  *Drawing everything including walls,targets,boxes and the man

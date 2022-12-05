@@ -12,7 +12,8 @@ import pt.isel.canvas.onStart
  */
 fun main() {
     val dim = Dimension(40, 54)
-    val maze = loadMap(original1)
+    val levels = loadLevels("Classic.txt")
+    val maze = levels.first()
     val manPos = maze.positionOfType(Type.MAN)
     val boxList = maze.positionsOfType(Type.BOX)
     val wallList = maze.positionsOfType(Type.WALL)
