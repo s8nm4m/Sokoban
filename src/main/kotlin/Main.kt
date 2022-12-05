@@ -23,7 +23,9 @@ fun main() {
     onStart {
         game.draw(board)
         board.onKeyPressed { k ->
-            if (game.boxes != game.targets) {
+            if (game.boxes != game.targets) { // não funciona a 100% só funciona se pusermos a box certa no sitio certo
+                println("boxes   ${game.boxes}")
+                println("targets ${game.targets}")
                 game = game.move(k.code)
                 game.draw(board)
             }

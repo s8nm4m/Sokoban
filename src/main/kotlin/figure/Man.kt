@@ -66,9 +66,11 @@ fun Man.move(key: Int, walls: List<Position>, boxes: List<Position>): Man {
         else -> dir
     }
     return when {
-        walls.contains(newPos.newPos(newDir)) && boxes.contains(newPos) ||
-                walls.contains(newPos) ||
-                boxes.contains(newPos.newPos(newDir)) && boxes.contains(newPos) -> copy(dir = newDir)
+        boxes.contains(newPos) &&
+                (walls.contains(newPos.newPos(newDir)) ||
+                        boxes.contains(newPos.newPos(newDir))) ||
+                walls.contains(newPos) -> copy(dir = newDir)
+
         else -> copy(pos = newPos, dir = newDir)
     }
 }
