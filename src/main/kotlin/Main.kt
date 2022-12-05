@@ -1,6 +1,7 @@
 import figure.Dimension
 import figure.Direction
 import figure.Man
+import figure.Move
 import pt.isel.canvas.Canvas
 import pt.isel.canvas.WHITE
 import pt.isel.canvas.onFinish
@@ -20,7 +21,7 @@ fun main() {
     val targetList = maze.positionsOfType(Type.TARGET)
     val man = Man(dim, manPos, Direction.DOWN)
     val board = Canvas(dim.width * maze.width, dim.height * maze.height, WHITE)
-    var game = Game(dim, man, wallList, boxList, targetList)
+    var game = Game(dim, man, wallList, boxList, targetList, 0, emptyList<Move>())
     onStart {
         game.draw(board)
         board.onKeyPressed { k ->
