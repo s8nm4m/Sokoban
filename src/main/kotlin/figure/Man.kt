@@ -3,12 +3,12 @@ package figure
 import Position
 import pt.isel.canvas.Canvas
 
-const val PUSHIMG = 4
-const val STILLIMG = 1
-const val LEFTIMG = 3
-const val RIGHTIMG = 1
-const val UPIMG = 0
-const val DOWNIMG = 2
+const val PUSH_IMG = 4
+const val STILL_IMG = 1
+const val LEFT_IMG = 3
+const val RIGHT_IMG = 1
+const val UP_IMG = 0
+const val DOWN_IMG = 2
 
 data class Man(val dim: Dimension, val pos: Position, val dir: Direction)
 
@@ -17,10 +17,10 @@ data class Man(val dim: Dimension, val pos: Position, val dir: Direction)
  */
 fun Man.draw(canvas: Canvas, boxes: List<Position>) {
     val direction = when (dir) {
-        Direction.LEFT -> LEFTIMG
-        Direction.RIGHT -> RIGHTIMG
-        Direction.DOWN -> DOWNIMG
-        else -> UPIMG
+        Direction.LEFT -> LEFT_IMG
+        Direction.RIGHT -> RIGHT_IMG
+        Direction.DOWN -> DOWN_IMG
+        else -> UP_IMG
     }
     val pushing = isPushing(boxes)
     canvas.drawImage(
@@ -38,7 +38,7 @@ fun Man.draw(canvas: Canvas, boxes: List<Position>) {
  */
 fun Man.isPushing(boxes: List<Position>): Int {
     val newPos = pos.newPos(dir)
-    return if (boxes.contains(newPos)) PUSHIMG else STILLIMG
+    return if (boxes.contains(newPos)) PUSH_IMG else STILL_IMG
 }
 
 /**

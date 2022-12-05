@@ -1,8 +1,11 @@
 package figure
 
-import pt.isel.canvas.*
+import pt.isel.canvas.DOWN_CODE
+import pt.isel.canvas.LEFT_CODE
+import pt.isel.canvas.RIGHT_CODE
+import pt.isel.canvas.UP_CODE
 
-enum class Direction() {
+enum class Direction {
     LEFT,
     RIGHT,
     UP,
