@@ -1,5 +1,7 @@
 import figure.*
 import figure.Target
+import pt.isel.canvas.BLACK
+import pt.isel.canvas.CYAN
 import pt.isel.canvas.Canvas
 
 data class Game(
@@ -8,9 +10,12 @@ data class Game(
     val walls: List<Position>,
     val boxes: List<Position>,
     val targets: List<Position>,
-    val level: Int = 0,
+    val level: Int = 1,
     val moves: List<Move>
 )
+
+const val INFO_H = 10
+
 /**
  *Drawing everything including walls,targets,boxes and the man
  */
@@ -20,6 +25,13 @@ fun Game.draw(canvas: Canvas) {
     targets.forEach { Target(dim, it).draw(canvas) }
     boxes.forEach { Box(dim, it).draw(canvas, targets) }
     man.draw(canvas, boxes)
+    drawInfo(canvas)
+}
+
+fun Game.drawInfo(canvas: Canvas) {
+    canvas.drawRect(0, dim.height * 10 - dim.height, dim.width * 10, INFO_H, CYAN)
+    canvas.drawText(dim.width, dim.height * 10 - (dim.height / 2), "Level: $level", BLACK)
+    canvas.drawText(dim.width * 10 - (dim.width * 2), dim.height * 10 - (dim.height / 2), "Moves: ${moves.size}", BLACK)
 }
 
 /**
