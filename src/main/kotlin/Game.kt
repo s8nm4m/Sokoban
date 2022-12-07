@@ -40,7 +40,9 @@ fun Game.drawInfo(canvas: Canvas) {
 fun Game.move(k: Int): Game {
     val nextMan = man.move(k, walls, boxes)
     val newBoxList = boxes.move(nextMan, walls)
-    return copy(man = nextMan, boxes = newBoxList, moves = moves + nextMan.dir)
+    val game = if(nextMan.pos != man.pos) copy(man = nextMan, boxes = newBoxList, moves = moves + nextMan.dir)
+    else copy(man = nextMan, boxes = newBoxList)
+    return game
 }
 
 /**

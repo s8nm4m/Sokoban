@@ -16,37 +16,48 @@ const val OFFSET = 1
 fun main() {
     val dim = Dimension(40, 54)
     val levels = loadLevels("Classic.txt")
-    val maze = levels.first()
+    //val maze = levels.first()
     val dims = levels.getDims()
+    /*
     val manPos = maze.positionOfType(Type.MAN)
     val boxList = maze.positionsOfType(Type.BOX)
     val wallList = maze.positionsOfType(Type.WALL)
     val targetList = maze.positionsOfType(Type.TARGET)
     val man = Man(dim, manPos, Direction.DOWN)
+    */
     val board = Canvas(dim.width * dims[1], dim.height * (dims[0] + OFFSET), WHITE)
-    var game = Game(dim, man, wallList, boxList, targetList, moves = emptyList())
+    var game = newGame(1, levels, dim)
     onStart {
-        val game2 = game // to facilitate reloading current level
         game.draw(board)
         board.onKeyPressed { k ->
             if (game.boxes.filter { game.targets.contains(it) }.size != game.targets.size) {
                 game = game.move(k.code)
                 game.draw(board)
                 game = when (k.text) {
-                    "R" -> game2
+                    "R" -> newGame(game.level, levels, dim)
                     "Backspace" -> game//.undoMove()
-                    "NumPad -", "Minus" -> game//.previousLevel()
+                    "NumPad -", "Minus" -> if (game.level > 1) newGame(game.level - 1, levels, dim) else game
                     else -> game
                 }
-                game.draw(board)
             } else {
-                // if (k.text == "Space") //.nextLevel()
-                game.draw(board)
+                if (k.text == "Space")
+                    game = newGame(game.level + 1, levels, dim)
             }
+            game.draw(board)
         }
     }
     onFinish {
     }
+}
+
+fun newGame(lvl: Int, maps: List<Maze>, dim: Dimension): Game {
+    val maze = maps[lvl - 1]
+    val manPos = maze.positionOfType(Type.MAN)
+    val boxList = maze.positionsOfType(Type.BOX)
+    val wallList = maze.positionsOfType(Type.WALL)
+    val targetList = maze.positionsOfType(Type.TARGET)
+    val man = Man(dim, manPos, Direction.DOWN)
+    return Game(dim, man, wallList, boxList, targetList, lvl, moves = emptyList())
 }
 /*
 KeyEvent(char=r, code=82, text=R)
