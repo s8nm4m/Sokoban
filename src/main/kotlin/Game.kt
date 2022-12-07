@@ -11,7 +11,7 @@ data class Game(
     val boxes: List<Position>,
     val targets: List<Position>,
     val level: Int = 1,
-    val moves: List<Move>
+    val moves: List<Direction>
 )
 
 const val INFO_H = 10
@@ -40,7 +40,7 @@ fun Game.drawInfo(canvas: Canvas) {
 fun Game.move(k: Int): Game {
     val nextMan = man.move(k, walls, boxes)
     val newBoxList = boxes.move(nextMan, walls)
-    return copy(man = nextMan, boxes = newBoxList)
+    return copy(man = nextMan, boxes = newBoxList, moves = moves + nextMan.dir)
 }
 
 /**

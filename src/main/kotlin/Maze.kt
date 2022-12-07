@@ -93,7 +93,24 @@ fun loadLevels(fileName: String): List<Maze> = Path(fileName)
     .map { loadMap(it) }
     .filter { it.height < 13 && it.width < 40 }
 
+/**
+ * Splits a list into multiple lists separated by the elements that match the predicate.
+ * Example: listOf(1,2,-1,3,4,-2,-3,5).splitBy{ it<0 }.toString() == "[[1, 2], [3, 4], [], [5]]"
+ */
+fun <T> List<T>.splitBy(predicate: (T) -> Boolean): List<List<T>> {
+    val res = mutableListOf<List<T>>()
+    var from = 0
+    var to = 0
+    while (to < size) {
+        while (to < size && !predicate(this[to])) to++
+        res.add(subList(from, to))
+        from = ++to
+    }
+    return res
+}
+
 fun main() {
+    println(listOf(1, 2, -1, 3, 4, -2, -3, 5).splitBy { it < 0 })
     val levels = loadLevels("Classic.txt")
     levels.forEach {
         println("${it.height}x${it.width}")
