@@ -3,6 +3,7 @@ import figure.Target
 import pt.isel.canvas.BLACK
 import pt.isel.canvas.CYAN
 import pt.isel.canvas.Canvas
+import pt.isel.canvas.RED
 
 data class Game(
     val dim: Dimension,
@@ -11,7 +12,8 @@ data class Game(
     val boxes: List<Position>,
     val targets: List<Position>,
     val level: Int = 1,
-    val moves: List<Direction>
+    val moves: List<Move>,
+    val gameOver: Boolean = false
 )
 
 const val INFO_H = 10
@@ -32,7 +34,16 @@ fun Game.drawInfo(canvas: Canvas) {
     canvas.drawRect(0, dim.height * 10 - dim.height, dim.width * 10, INFO_H, CYAN)
     canvas.drawText(dim.width, dim.height * 10 - (dim.height / 2), "Level: $level", BLACK)
     canvas.drawText(dim.width * 10 - (dim.width * 2), dim.height * 10 - (dim.height / 2), "Moves: ${moves.size}", BLACK)
+    if (gameOver)
+        canvas.drawText(
+            dim.width * 15 - (dim.width * 10 - (dim.width * 2)),
+            dim.height * 10 - (dim.height / 2),
+            "GAME OVER",
+            RED
+        )
 }
+
+fun Game.gameOver() = copy(gameOver = true)
 
 /**
  * Making the man and the box move by returning a new game with the updated positions
@@ -40,9 +51,13 @@ fun Game.drawInfo(canvas: Canvas) {
 fun Game.move(k: Int): Game {
     val nextMan = man.move(k, walls, boxes)
     val newBoxList = boxes.move(nextMan, walls)
-    val game = if(nextMan.pos != man.pos) copy(man = nextMan, boxes = newBoxList, moves = moves + nextMan.dir)
+    val boxMove = newBoxList == boxes
+    return if (nextMan.pos != man.pos) copy(
+        man = nextMan,
+        boxes = newBoxList,
+        moves = moves + Move(nextMan.dir, boxMove)
+    )
     else copy(man = nextMan, boxes = newBoxList)
-    return game
 }
 
 /**

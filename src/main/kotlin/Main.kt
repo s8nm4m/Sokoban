@@ -22,15 +22,16 @@ fun main() {
     onStart {
         game.draw(board)
         board.onKeyPressed { k ->
+            if (k.text == "R") game = newGame(game.level, levels, dim)
             if (game.boxes.filter { game.targets.contains(it) }.size != game.targets.size) {
                 game = game.move(k.code)
                 game = when (k.text) {
-                    "R" -> newGame(game.level, levels, dim)
                     "Backspace" -> game//.undoMove()
                     "NumPad -", "Minus" -> if (game.level > 1) newGame(game.level - 1, levels, dim) else game
                     else -> game
                 }
             } else {
+                game = game.gameOver()
                 if (k.text == "Space")
                     game = newGame(game.level + 1, levels, dim)
             }
@@ -68,12 +69,12 @@ fun List<Maze>.getDims(): Dimension {
     val width = sortedBy { it.width }[size - 1].width
     return Dimension(width, height)
 }
-/*
-fun List<String>.splitBy(s: (String) -> Boolean): List<List<String>> {
+
+fun List<String>.splitBy(lambda: (String) -> Boolean): List<List<String>> {
     var list = emptyList<List<String>>()
     var subList = emptyList<String>()
     for (line in this) {
-        if (!s(line))
+        if (!lambda(line))
             subList = subList + line
         else {
             list = list + listOf(subList)
@@ -81,4 +82,4 @@ fun List<String>.splitBy(s: (String) -> Boolean): List<List<String>> {
         }
     }
     return list
-}*/
+}
