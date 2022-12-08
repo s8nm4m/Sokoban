@@ -16,23 +16,14 @@ const val OFFSET = 1
 fun main() {
     val dim = Dimension(40, 54)
     val levels = loadLevels("Classic.txt")
-    //val maze = levels.first()
-    val dims = levels.getDims()
-    /*
-    val manPos = maze.positionOfType(Type.MAN)
-    val boxList = maze.positionsOfType(Type.BOX)
-    val wallList = maze.positionsOfType(Type.WALL)
-    val targetList = maze.positionsOfType(Type.TARGET)
-    val man = Man(dim, manPos, Direction.DOWN)
-    */
-    val board = Canvas(dim.width * dims[1], dim.height * (dims[0] + OFFSET), WHITE)
+    val maxDimensions = levels.getDims()
+    val board = Canvas(dim.width * maxDimensions.width, dim.height * (maxDimensions.height + OFFSET), WHITE)
     var game = newGame(1, levels, dim)
     onStart {
         game.draw(board)
         board.onKeyPressed { k ->
             if (game.boxes.filter { game.targets.contains(it) }.size != game.targets.size) {
                 game = game.move(k.code)
-                game.draw(board)
                 game = when (k.text) {
                     "R" -> newGame(game.level, levels, dim)
                     "Backspace" -> game//.undoMove()
@@ -72,10 +63,10 @@ KeyEvent(char=￿, code=40, text=Down)
 KeyEvent(char=, code=27, text=Escape)
  */
 
-fun List<Maze>.getDims(): List<Int> {
+fun List<Maze>.getDims(): Dimension {
     val height = sortedBy { it.height }[size - 1].height
     val width = sortedBy { it.width }[size - 1].width
-    return listOf(height, width)
+    return Dimension(width, height)
 }
 /*
 fun List<String>.splitBy(s: (String) -> Boolean): List<List<String>> {
