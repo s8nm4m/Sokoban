@@ -11,27 +11,36 @@ import pt.isel.canvas.onStart
  * Verifying if the boxes are on targets to end game by making the man unable to move anymore
  */
 
-const val OFFSET = 1
+const val STATUS_BAR = 1
+val CELL = Dimension(40, 54)
 
 fun main() {
-    val dim = Dimension(40, 54)
     val levels = loadLevels("Classic.txt")
     val maxDimensions = levels.getDims()
-    val board = Canvas(dim.width * maxDimensions.width, dim.height * (maxDimensions.height + OFFSET), WHITE)
-    var game = newGame(1, levels, dim)
+    val board = Canvas(
+        CELL.width * maxDimensions.width,
+        CELL.height * (maxDimensions.height + STATUS_BAR),
+        WHITE
+    )
+    var game = newGame(1, levels, maxDimensions)
     onStart {
         game.draw(board)
         board.onKeyPressed { k ->
-            if (k.text == "R") game = newGame(game.level, levels, dim)
+            if (k.text == "R") game = newGame(game.level, levels, maxDimensions)
             if (game.boxes.filter { game.targets.contains(it) }.size != game.targets.size) {
                 game = when (k.text) {
                     "Backspace" -> game//.undoMove()
-                    "NumPad -", "Minus" -> if (game.level > 1) newGame(game.level - 1, levels, dim) else game
+                    "NumPad -", "Minus" ->
+                        if (game.level > 1)
+                            newGame(game.level - 1, levels, maxDimensions)
+                        else
+                            game
+
                     else -> game.move(k.code)
                 }
             } else {
                 if (k.text == "Space")
-                    game = newGame(game.level + 1, levels, dim)
+                    game = newGame(game.level + 1, levels, maxDimensions)
             }
             game = game.isGameOver()
             game.draw(board)
@@ -41,14 +50,30 @@ fun main() {
     }
 }
 
-fun newGame(lvl: Int, maps: List<Maze>, dim: Dimension): Game {
+fun newGame(lvl: Int, maps: List<Maze>, maxDimension: Dimension): Game {
     val maze = maps[lvl - 1]
     val manPos = maze.positionOfType(Type.MAN)
     val boxList = maze.positionsOfType(Type.BOX)
     val wallList = maze.positionsOfType(Type.WALL)
     val targetList = maze.positionsOfType(Type.TARGET)
-    val man = Man(dim, manPos, Direction.DOWN)
-    return Game(dim, man, wallList, boxList, targetList, lvl, moves = emptyList())
+    val dim = Dimension(
+        maxDimension.width - maze.width,
+        maxDimension.height - maze.height
+    )
+    val man = Man(
+        dim,
+        manPos,
+        Direction.DOWN
+    )
+    return Game(
+        dim,
+        man,
+        wallList,
+        boxList,
+        targetList,
+        lvl,
+        moves = emptyList()
+    )
 }
 
 fun List<Maze>.getDims(): Dimension {

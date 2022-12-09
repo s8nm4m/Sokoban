@@ -33,27 +33,27 @@ const val TWO = 2
 fun Game.drawInfo(canvas: Canvas) {
     canvas.drawRect(
         0,
-        canvas.height - dim.height,
+        canvas.height - CELL.height,
         canvas.width,
-        dim.height,
+        CELL.height,
         CYAN
     )
     canvas.drawText(
-        dim.width,
-        canvas.height - dim.height / THREE,
+        CELL.width,
+        canvas.height - CELL.height / THREE,
         "Level: $level",
         BLACK
     )
     canvas.drawText(
         canvas.width * TWO / THREE,
-        canvas.height - dim.height / THREE,
+        canvas.height - CELL.height / THREE,
         "Moves: ${moves.size}",
         BLACK
     )
     if (gameOver)
         canvas.drawText(
             canvas.width / THREE,
-            canvas.height - dim.height / THREE,
+            canvas.height - CELL.height / THREE,
             "Game Over",
             RED
         )

@@ -1,5 +1,6 @@
 package figure
 
+import CELL
 import Position
 import pt.isel.canvas.Canvas
 
@@ -24,13 +25,15 @@ fun Man.draw(canvas: Canvas, boxes: List<Position>) {
     }
     val pushing = isPushing(boxes)
     canvas.drawImage(
-        "soko|${pushing * dim.width},${direction * dim.height + 1},${dim.width},${dim.height}",
-        pos.col * dim.width,
-        pos.line * dim.height,
-        dim.width,
-        dim.height
+        "soko|${pushing * CELL.width}," +
+                "${direction * CELL.height + 1}," +
+                "${CELL.width}," +
+                "${CELL.height}",
+        (pos.col + dim.width / 2) * CELL.width,
+        (pos.line + dim.height / 2) * CELL.height,
+        CELL.width,
+        CELL.height
     )
-
 }
 
 /**

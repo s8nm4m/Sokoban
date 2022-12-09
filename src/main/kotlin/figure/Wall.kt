@@ -1,5 +1,6 @@
 package figure
 
+import CELL
 import Position
 import pt.isel.canvas.Canvas
 
@@ -13,10 +14,10 @@ data class Wall(val dim: Dimension, val pos: Position)
  */
 fun Wall.draw(canvas: Canvas) {
     canvas.drawImage(
-        "soko|$WALL_START_W,$WALL_START_H,${dim.width},${dim.height}",
-        pos.col * dim.width,
-        pos.line * dim.height + 1,
-        dim.width,
-        dim.height
+        "soko|$WALL_START_W,$WALL_START_H,${CELL.width},${CELL.height}",
+        (pos.col + dim.width / 2) * CELL.width,
+        (pos.line + dim.height / 2) * CELL.height + 1,
+        CELL.width,
+        CELL.height
     )
 }
