@@ -24,17 +24,16 @@ fun main() {
         board.onKeyPressed { k ->
             if (k.text == "R") game = newGame(game.level, levels, dim)
             if (game.boxes.filter { game.targets.contains(it) }.size != game.targets.size) {
-                game = game.move(k.code)
                 game = when (k.text) {
                     "Backspace" -> game//.undoMove()
                     "NumPad -", "Minus" -> if (game.level > 1) newGame(game.level - 1, levels, dim) else game
-                    else -> game
+                    else -> game.move(k.code)
                 }
             } else {
-                game = game.gameOver()
                 if (k.text == "Space")
                     game = newGame(game.level + 1, levels, dim)
             }
+            game = game.isGameOver()
             game.draw(board)
         }
     }
@@ -51,18 +50,6 @@ fun newGame(lvl: Int, maps: List<Maze>, dim: Dimension): Game {
     val man = Man(dim, manPos, Direction.DOWN)
     return Game(dim, man, wallList, boxList, targetList, lvl, moves = emptyList())
 }
-/*
-KeyEvent(char=r, code=82, text=R)
-KeyEvent(char= , code=32, text=Space)
-KeyEvent(char, code=8, text=Backspace)
-KeyEvent(char=-, code=109, text=NumPad -)
-KeyEvent(char=-, code=45, text=Minus)
-KeyEvent(char=￿, code=37, text=Left)
-KeyEvent(char=￿, code=38, text=Up)
-KeyEvent(char=￿, code=39, text=Right)
-KeyEvent(char=￿, code=40, text=Down)
-KeyEvent(char=, code=27, text=Escape)
- */
 
 fun List<Maze>.getDims(): Dimension {
     val height = sortedBy { it.height }[size - 1].height
@@ -73,13 +60,13 @@ fun List<Maze>.getDims(): Dimension {
 fun List<String>.splitBy(lambda: (String) -> Boolean): List<List<String>> {
     var list = emptyList<List<String>>()
     var subList = emptyList<String>()
-    for (line in this) {
-        if (!lambda(line))
-            subList = subList + line
+    forEach {
+        if (!lambda(it))
+            subList = subList + it
         else {
             list = list + listOf(subList)
             subList = emptyList()
         }
     }
-    return list
+    return list + listOf(subList)
 }

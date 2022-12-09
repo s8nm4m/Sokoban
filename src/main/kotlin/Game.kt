@@ -16,8 +16,6 @@ data class Game(
     val gameOver: Boolean = false
 )
 
-const val INFO_H = 10
-
 /**
  *Drawing everything including walls,targets,boxes and the man
  */
@@ -30,20 +28,43 @@ fun Game.draw(canvas: Canvas) {
     drawInfo(canvas)
 }
 
+const val THREE = 3
+const val TWO = 2
 fun Game.drawInfo(canvas: Canvas) {
-    canvas.drawRect(0, dim.height * 10 - dim.height, dim.width * 10, INFO_H, CYAN)
-    canvas.drawText(dim.width, dim.height * 10 - (dim.height / 2), "Level: $level", BLACK)
-    canvas.drawText(dim.width * 10 - (dim.width * 2), dim.height * 10 - (dim.height / 2), "Moves: ${moves.size}", BLACK)
+    canvas.drawRect(
+        0,
+        canvas.height - dim.height,
+        canvas.width,
+        dim.height,
+        CYAN
+    )
+    canvas.drawText(
+        dim.width,
+        canvas.height - dim.height / THREE,
+        "Level: $level",
+        BLACK
+    )
+    canvas.drawText(
+        canvas.width * TWO / THREE,
+        canvas.height - dim.height / THREE,
+        "Moves: ${moves.size}",
+        BLACK
+    )
     if (gameOver)
         canvas.drawText(
-            dim.width * 15 - (dim.width * 10 - (dim.width * 2)),
-            dim.height * 10 - (dim.height / 2),
-            "GAME OVER",
+            canvas.width / THREE,
+            canvas.height - dim.height / THREE,
+            "Game Over",
             RED
         )
 }
 
 fun Game.gameOver() = copy(gameOver = true)
+
+fun Game.isGameOver(): Game {
+    return if (boxes.filter { targets.contains(it) }.size == targets.size) gameOver()
+    else this
+}
 
 /**
  * Making the man and the box move by returning a new game with the updated positions
@@ -51,13 +72,13 @@ fun Game.gameOver() = copy(gameOver = true)
 fun Game.move(k: Int): Game {
     val nextMan = man.move(k, walls, boxes)
     val newBoxList = boxes.move(nextMan, walls)
-    val boxMove = newBoxList == boxes
-    return if (nextMan.pos != man.pos) copy(
-        man = nextMan,
-        boxes = newBoxList,
-        moves = moves + Move(nextMan.dir, boxMove)
-    )
-    else copy(man = nextMan, boxes = newBoxList)
+    val boxMove = newBoxList.filter { boxes.contains(it) }.size != boxes.size
+    val m =
+        if (nextMan.pos != man.pos)
+            moves + Move(nextMan.dir, boxMove)
+        else
+            moves
+    return copy(man = nextMan, boxes = newBoxList, moves = m, gameOver = false)
 }
 
 /**
