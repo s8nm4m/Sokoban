@@ -11,7 +11,7 @@ const val STATUS_BAR = 1
 val CELL = Dimension(40, 54)
 
 /**
- * Getting the actual game and setting the keys for next level , undo movement and reset
+ * Getting the actual game and setting the keys for next level , the level before , undo movement and reset
  */
 fun main() {
     val levels = loadLevels("Classic.txt")
