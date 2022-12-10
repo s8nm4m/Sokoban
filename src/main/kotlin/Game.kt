@@ -30,6 +30,11 @@ fun Game.draw(canvas: Canvas) {
 
 const val THREE = 3
 const val TWO = 2
+
+/**
+ * Setting up the info needed for the game at the bottom of the screen like:
+ * How many moves the man made , which level and if the level ended or not
+ */
 fun Game.drawInfo(canvas: Canvas) {
     canvas.drawRect(
         0,
@@ -59,6 +64,9 @@ fun Game.drawInfo(canvas: Canvas) {
         )
 }
 
+/**
+ * Functions to see if the game ended
+ */
 fun Game.gameOver() = copy(gameOver = true)
 
 fun Game.isGameOver(): Game {
