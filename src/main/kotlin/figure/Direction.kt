@@ -6,10 +6,7 @@ import pt.isel.canvas.RIGHT_CODE
 import pt.isel.canvas.UP_CODE
 
 enum class Direction {
-    LEFT,
-    RIGHT,
-    UP,
-    DOWN;
+    LEFT, RIGHT, UP, DOWN;
 }
 
 /**

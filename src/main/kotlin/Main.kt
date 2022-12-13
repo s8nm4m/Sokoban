@@ -17,9 +17,7 @@ fun main() {
     val levels = loadLevels("Classic.txt")
     val maxDimensions = levels.getDims()
     val board = Canvas(
-        CELL.width * maxDimensions.width,
-        CELL.height * (maxDimensions.height + STATUS_BAR),
-        WHITE
+        CELL.width * maxDimensions.width, CELL.height * (maxDimensions.height + STATUS_BAR), WHITE
     )
     var game = newGame(1, levels, maxDimensions)
     onStart {
@@ -29,24 +27,19 @@ fun main() {
             if (game.boxes.filter { game.targets.contains(it) }.size != game.targets.size) {
                 game = when (k.text) {
                     "Backspace" -> game//.undoMove()
-                    "NumPad -", "Minus" ->
-                        if (game.level > 1)
-                            newGame(game.level - 1, levels, maxDimensions)
-                        else
-                            game
+                    "NumPad -", "Minus" -> if (game.level > 1) newGame(game.level - 1, levels, maxDimensions)
+                    else game
 
                     else -> game.move(k.code)
                 }
             } else {
-                if (k.text == "Space")
-                    game = newGame(game.level + 1, levels, maxDimensions)
+                if (k.text == "Space") game = newGame(game.level + 1, levels, maxDimensions)
             }
             game = game.isGameOver()
             game.draw(board)
         }
     }
-    onFinish {
-    }
+    onFinish {}
 }
 
 /**
@@ -60,22 +53,13 @@ fun newGame(lvl: Int, maps: List<Maze>, maxDimension: Dimension): Game {
     val wallList = maze.positionsOfType(Type.WALL)
     val targetList = maze.positionsOfType(Type.TARGET)
     val dim = Dimension(
-        maxDimension.width - maze.width,
-        maxDimension.height - maze.height
+        maxDimension.width - maze.width, maxDimension.height - maze.height
     )
     val man = Man(
-        dim,
-        manPos,
-        Direction.DOWN
+        dim, manPos, Direction.DOWN
     )
     return Game(
-        dim,
-        man,
-        wallList,
-        boxList,
-        targetList,
-        lvl,
-        moves = emptyList()
+        dim, man, wallList, boxList, targetList, lvl, moves = emptyList()
     )
 }
 
@@ -95,12 +79,13 @@ fun List<String>.splitBy(lambda: (String) -> Boolean): List<List<String>> {
     var list = emptyList<List<String>>()
     var subList = emptyList<String>()
     forEach {
-        if (!lambda(it))
-            subList = subList + it
+        if (!lambda(it)) subList = subList.add(it)
         else {
-            list = list + listOf(subList)
+            list = list.add(subList)
             subList = emptyList()
         }
     }
-    return list + listOf(subList)
+    return list.add(subList)
 }
+
+fun <T> List<T>.add(string: T) = this + string

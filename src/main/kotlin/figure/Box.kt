@@ -27,4 +27,3 @@ fun Box.draw(canvas: Canvas, targets: List<Position>) {
  * Function to verify if the box is in the target
  */
 fun Box.inTarget(targets: List<Position>) = targets.contains(pos)
-

@@ -25,10 +25,7 @@ fun Man.draw(canvas: Canvas, boxes: List<Position>) {
     }
     val pushing = isPushing(boxes)
     canvas.drawImage(
-        "soko|${pushing * CELL.width}," +
-                "${direction * CELL.height + 1}," +
-                "${CELL.width}," +
-                "${CELL.height}",
+        "soko|${pushing * CELL.width}," + "${direction * CELL.height + 1}," + "${CELL.width}," + "${CELL.height}",
         (pos.col + dim.width / 2) * CELL.width,
         (pos.line + dim.height / 2) * CELL.height,
         CELL.width,
@@ -69,10 +66,9 @@ fun Man.move(key: Int, walls: List<Position>, boxes: List<Position>): Man {
         else -> dir
     }
     return when {
-        boxes.contains(newPos) &&
-                (walls.contains(newPos.newPos(newDir)) ||
-                        boxes.contains(newPos.newPos(newDir))) ||
-                walls.contains(newPos) -> copy(dir = newDir)
+        boxes.contains(newPos) && (walls.contains(newPos.newPos(newDir)) || boxes.contains(newPos.newPos(newDir))) || walls.contains(
+            newPos
+        ) -> copy(dir = newDir)
 
         else -> copy(pos = newPos, dir = newDir)
     }

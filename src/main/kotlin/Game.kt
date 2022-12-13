@@ -11,7 +11,7 @@ data class Game(
     val walls: List<Position>,
     val boxes: List<Position>,
     val targets: List<Position>,
-    val level: Int = 1,
+    val level: Int,
     val moves: List<Move>,
     val gameOver: Boolean = false
 )
@@ -37,31 +37,17 @@ const val TWO = 2
  */
 fun Game.drawInfo(canvas: Canvas) {
     canvas.drawRect(
-        0,
-        canvas.height - CELL.height,
-        canvas.width,
-        CELL.height,
-        CYAN
+        0, canvas.height - CELL.height, canvas.width, CELL.height, CYAN
     )
     canvas.drawText(
-        CELL.width,
-        canvas.height - CELL.height / THREE,
-        "Level: $level",
-        BLACK
+        CELL.width, canvas.height - CELL.height / THREE, "Level: $level", BLACK
     )
     canvas.drawText(
-        canvas.width * TWO / THREE,
-        canvas.height - CELL.height / THREE,
-        "Moves: ${moves.size}",
-        BLACK
+        canvas.width * TWO / THREE, canvas.height - CELL.height / THREE, "Moves: ${moves.size}", BLACK
     )
-    if (gameOver)
-        canvas.drawText(
-            canvas.width / THREE,
-            canvas.height - CELL.height / THREE,
-            "Game Over",
-            RED
-        )
+    if (gameOver) canvas.drawText(
+        canvas.width / THREE, canvas.height - CELL.height / THREE, "Game Over", RED
+    )
 }
 
 /**
@@ -81,11 +67,8 @@ fun Game.move(k: Int): Game {
     val nextMan = man.move(k, walls, boxes)
     val newBoxList = boxes.move(nextMan, walls)
     val boxMove = newBoxList.filter { boxes.contains(it) }.size != boxes.size
-    val m =
-        if (nextMan.pos != man.pos)
-            moves + Move(nextMan.dir, boxMove)
-        else
-            moves
+    val m = if (nextMan.pos != man.pos) moves + Move(nextMan.dir, boxMove)
+    else moves
     return copy(man = nextMan, boxes = newBoxList, moves = m, gameOver = false)
 }
 
