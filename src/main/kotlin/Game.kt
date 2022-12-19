@@ -67,9 +67,19 @@ fun Game.move(k: Int): Game {
     val nextMan = man.move(k, walls, boxes)
     val newBoxList = boxes.move(nextMan, walls)
     val boxMove = newBoxList.filter { boxes.contains(it) }.size != boxes.size
-    val m = if (nextMan.pos != man.pos) moves + Move(nextMan.dir, boxMove)
+    val m = if (nextMan.pos != man.pos) moves + Move(boxes, man.pos, nextMan.dir, boxMove)
     else moves
     return copy(man = nextMan, boxes = newBoxList, moves = m, gameOver = false)
+}
+
+fun Game.undoMove(): Game {
+    return if (moves.isNotEmpty()) {
+        val previousMan = Man(man.dim, moves.last().pos, moves.last().dir)
+        val previousBoxes = if (moves.last().boxMoved) {
+            moves.last().boxes
+        } else boxes
+        Game(dim, previousMan, walls, previousBoxes, targets, level, moves.dropLast(1), gameOver)
+    } else this
 }
 
 /**

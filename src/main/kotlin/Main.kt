@@ -26,7 +26,7 @@ fun main() {
             if (k.text == "R") game = newGame(game.level, levels, maxDimensions)
             if (game.boxes.filter { game.targets.contains(it) }.size != game.targets.size) {
                 game = when (k.text) {
-                    "Backspace" -> game//.undoMove()
+                    "Backspace" -> if (game.moves.isNotEmpty()) game.undoMove() else game
                     "NumPad -", "Minus" -> if (game.level > 1) newGame(game.level - 1, levels, maxDimensions)
                     else game
 
@@ -59,7 +59,7 @@ fun newGame(lvl: Int, maps: List<Maze>, maxDimension: Dimension): Game {
         dim, manPos, Direction.DOWN
     )
     return Game(
-        dim, man, wallList, boxList, targetList, lvl, moves = emptyList()
+        dim, man, wallList, boxList, targetList, lvl, emptyList()
     )
 }
 
