@@ -88,4 +88,4 @@ fun List<String>.splitBy(lambda: (String) -> Boolean): List<List<String>> {
     return list.add(subList)
 }
 
-fun <T> List<T>.add(string: T) = this + string
+fun <T> List<T>.add(t: T) = this + t
