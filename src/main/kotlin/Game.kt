@@ -17,7 +17,7 @@ data class Game(
 )
 
 /**
- *Drawing everything including walls,targets,boxes and the man
+ *Drawing everything including walls,targets,boxes , the man and the info of the current game
  */
 fun Game.draw(canvas: Canvas) {
     canvas.erase()
@@ -72,6 +72,9 @@ fun Game.move(k: Int): Game {
     return copy(man = nextMan, boxes = newBoxList, moves = m, gameOver = false)
 }
 
+/**
+ * Setting the function to undo 1 movement of the man and the box ( if it moved before)
+ */
 fun Game.undoMove(): Game {
     return if (moves.isNotEmpty()) {
         val previousMan = Man(man.dim, moves.last().pos, moves.last().dir)
