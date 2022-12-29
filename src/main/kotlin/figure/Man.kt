@@ -16,7 +16,7 @@ data class Man(val dim: Dimension, val pos: Position, val dir: Direction)
 /**
  * Drawing the man depending on the direction and if it is pushing the box or not
  */
-fun Man.draw(canvas: Canvas, boxes: List<Position>) {
+fun Man.draw(canvas: Canvas, boxes: List<Position>, idx: Int) {
     val direction = when (dir) {
         Direction.LEFT -> LEFT_IMG
         Direction.RIGHT -> RIGHT_IMG

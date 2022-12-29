@@ -24,7 +24,7 @@ fun main() {
         game.draw(board)
         board.onKeyPressed { k ->
             if (k.text == "R") game = newGame(game.level, levels, maxDimensions)
-            if (game.boxes.filter { game.targets.contains(it) }.size != game.targets.size) {
+            if (!game.gameOver) {
                 game = when (k.text) {
                     "Backspace" -> if (game.moves.isNotEmpty()) game.undoMove() else game
                     "NumPad -", "Minus" -> if (game.level > 1) newGame(game.level - 1, levels, maxDimensions)
@@ -36,7 +36,13 @@ fun main() {
                 if (k.text == "Space") game = newGame(game.level + 1, levels, maxDimensions)
             }
             game = game.isGameOver()
-            game.draw(board)
+            repeat(3) { idx ->
+                board.onTime(1000) { game.draw(board, idx) }
+            }/*
+                board.onTimeProgress(300) { tm ->
+                    val dx = (tm / 300).toInt() - 1
+                    game.draw(board, dx)
+                }*/
         }
     }
     onFinish {}
