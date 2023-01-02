@@ -36,13 +36,7 @@ fun main() {
                 if (k.text == "Space") game = newGame(game.level + 1, levels, maxDimensions)
             }
             game = game.isGameOver()
-            repeat(3) { idx ->
-                board.onTime(1000) { game.draw(board, idx) }
-            }/*
-                board.onTimeProgress(300) { tm ->
-                    val dx = (tm / 300).toInt() - 1
-                    game.draw(board, dx)
-                }*/
+            game.draw(board)
         }
     }
     onFinish {}

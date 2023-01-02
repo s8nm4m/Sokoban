@@ -19,12 +19,12 @@ data class Game(
 /**
  *Drawing everything including walls,targets,boxes , the man and the info of the current game
  */
-fun Game.draw(canvas: Canvas, idx: Int = 2) {
+fun Game.draw(canvas: Canvas) {
     canvas.erase()
     walls.forEach { Wall(dim, it).draw(canvas) }
     targets.forEach { Target(dim, it).draw(canvas) }
-    boxes.forEach { Box(dim, it).draw(canvas, targets, idx) }
-    man.draw(canvas, boxes, idx)
+    boxes.forEach { Box(dim, it).draw(canvas, targets) }
+    man.draw(canvas, boxes)
     drawInfo(canvas)
 }
 
